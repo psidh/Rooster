@@ -1,0 +1,20 @@
+{
+  "name": "api-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-ecs": "^3.614.0",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "ioredis": "^5.4.1",
+    "random-word-slugs": "^0.1.7",
+    "socket.io": "^4.7.5"
+  }
+}
