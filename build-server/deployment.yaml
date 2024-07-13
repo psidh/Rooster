@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: my-app-container
+        image: your-dockerhub-username/your-image:tag
+        env:
+        - name: GIT_REPOSITORY_URL
+          value: "your-repo-url"
+        - name: PROJECT_ID
+          value: "your-project-id"
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: aws-credentials
+          mountPath: /root/.aws
+          readOnly: true
+      volumes:
+      - name: aws-credentials
+        secret:
+          secretName: aws-credentials

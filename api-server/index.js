@@ -1,44 +1,48 @@
-const express = require('express')
-const { generateSlug } = require('random-word-slugs')
-const { ECSClient, RunTaskCommand } = require('@aws-sdk/client-ecs')
-const { Server } = require('socket.io')
-const Redis = require('ioredis')
+require("dotenv").config();
+const express = require("express");
+const { generateSlug } = require("random-word-slugs");
+const cors = require("cors");
 
-const app = express()
-const PORT = 9000
+const { ECSClient, RunTaskCommand } = require("@aws-sdk/client-ecs");
+const { Server } = require("socket.io");
+const Redis = require("ioredis");
 
-const subscriber = new Redis({
-  host: process.env.REDIS_URI,
-  port: 12093,
-  password: process.env.REDIS_PASSWORD,
+const app = express();
+app.use(cors());
+const PORT = 9000;
+app.use(express.json());
+const subscriber = new Redis("");
 
-})
+console.log("Subscriber connected to Redis");
 
-const io = new Server({ cors: '*' })
+const io = new Server({ cors: "*" });
 
-io.on('connection', socket => {
-    socket.on('subscribe', channel => {
-        socket.join(channel)
-        socket.emit('message', `Joined ${channel}`)
-    })
-})
+io.on("connection", (socket) => {
+  socket.on("subscribe", (channel) => {
+    socket.join(channel);
+    socket.emit("message", `Joined ${channel}`);
+  });
+});
 
-io.listen(9002, () => console.log('Socket Server 9002'))
+io.listen(9001, () => console.log("Socket Server 9001"));
+
+console.log("Socket Server running on port 9001");
 
 const ecsClient = new ECSClient({
   region: "ap-south-1",
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    accessKeyId: "",
+    secretAccessKey: "",
   },
 });
 
 const config = {
-  CLUSTER: process.env.CLUSTER,
-  TASK: process.env.TASK,
+  CLUSTER: "",
+  TASK: "",
 };
 
 app.post("/project", async (req, res) => {
+  console.log(req.body);
   const { gitURL, slug } = req.body;
   const projectSlug = slug ? slug : generateSlug();
   const command = new RunTaskCommand({
@@ -48,13 +52,9 @@ app.post("/project", async (req, res) => {
     count: 1,
     networkConfiguration: {
       awsvpcConfiguration: {
-        subnets: [
-          "subnet-0e6e01d1ecf80c71b",
-          "subnet-04587c00e83f51554",
-          "subnet-0683a40d288a23fd4",
-        ],
+        subnets: ["", "", ""],
         assignPublicIp: "ENABLED",
-        securityGroups: ["sg-0d5405aa8c2fae614"],
+        securityGroups: [""],
       },
     },
     overrides: {
@@ -77,7 +77,6 @@ app.post("/project", async (req, res) => {
   });
 
   await ecsClient.send(command);
-
   return res.json({
     status: "queued",
     data: {
@@ -91,7 +90,11 @@ async function subscribeRedis() {
   console.log("Subscribed to logs....");
   subscriber.psubscribe("logs:*");
   subscriber.on("pmessage", (pattern, channel, message) => {
-    io.to(channel).emit("message", message);
+    const isComplete = message.includes("All files uploaded successfully");
+    const logMessage = JSON.stringify({ log: message, complete: isComplete });
+    console.log("logmessage: ", logMessage);
+    console.log("simple message: ", message);
+    io.to(channel).emit("message", logMessage);
   });
 }
 

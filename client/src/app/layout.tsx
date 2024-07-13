@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Plus_Jakarta_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Deployment Pipeline",
+  title: "Rooster",
   description: "Continuous deployment pipeline with Next.js for React",
 };
 
@@ -16,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`bg-black text-white ${inter.className}`}>{children}</body>
+      <body className={`bg-white text-black dark:bg-black dark:text-white ${inter.className}`}>{children}</body>
     </html>
   );
 }

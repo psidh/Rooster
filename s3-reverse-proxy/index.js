@@ -2,17 +2,23 @@ const express = require("express");
 const httpProxy = require("http-proxy");
 const PORT = 8000;
 const app = express();
+const cors = require("cors");
+app.use(cors());
 
-const BASE_PATH = `https://psidh-deployment-pipeline.s3.ap-south-1.amazonaws.com/__outputs`;
+const BASE_PATH = ``;
 
 const proxy = httpProxy.createProxyServer();
 app.use((req, res) => {
   const hostname = req.hostname;
   const subDomain = hostname.split(".")[0];
+  console.log(subDomain);
   const resolveTo = `${BASE_PATH}/${subDomain}`;
+
+  console.log(`Proxying to: ${resolveTo}`); // Log the target URL
 
   return proxy.web(req, res, { target: resolveTo, changeOrigin: true });
 });
+
 
 proxy.on("proxyReq", (proxyReq, req, res) => {
   const url = req.url;
