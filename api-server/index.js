@@ -1,4 +1,5 @@
 require("dotenv").config();
+console.log(process.env); 
 const express = require("express");
 const { generateSlug } = require("random-word-slugs");
 const cors = require("cors");
