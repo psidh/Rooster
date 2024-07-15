@@ -11,7 +11,7 @@ const app = express();
 app.use(cors());
 const PORT = 9000;
 app.use(express.json());
-const subscriber = new Redis("");
+const subscriber = new Redis(process.env.REDIS_URI);
 
 console.log("Subscriber connected to Redis");
 
@@ -29,16 +29,16 @@ io.listen(9001, () => console.log("Socket Server 9001"));
 console.log("Socket Server running on port 9001");
 
 const ecsClient = new ECSClient({
-  region: "ap-south-1",
+  region: process.env.AWS_REGION,
   credentials: {
-    accessKeyId: "",
-    secretAccessKey: "",
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   },
 });
 
 const config = {
-  CLUSTER: "",
-  TASK: "",
+  CLUSTER: process.env.CLUSTER,
+  TASK: process.env.TASK,
 };
 
 app.post("/project", async (req, res) => {
@@ -52,9 +52,9 @@ app.post("/project", async (req, res) => {
     count: 1,
     networkConfiguration: {
       awsvpcConfiguration: {
-        subnets: ["", "", ""],
+        subnets: [process.env.SUBNET_ONE, process.env.SUBNET_TWO, process.env.SUBNET_THREE],
         assignPublicIp: "ENABLED",
-        securityGroups: [""],
+        securityGroups: [process.env.SECURITY_GROUP],
       },
     },
     overrides: {

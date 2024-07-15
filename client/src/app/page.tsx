@@ -103,7 +103,7 @@ export default function Home() {
   }, [projectId, handleSocketIncomingMessage]);
 
   return (
-    <main className="flex flex-col justify-center items-center h-screen py-24">
+    <main className="flex flex-col justify-center items-center py-12">
       <Toaster />
       <div className="w-1/2">
         <h1 className="text-6xl font-semibold py-8">Rooster</h1>
@@ -118,7 +118,7 @@ export default function Home() {
           Useful for quick production testing | In House Testing
         </p>
 
-        <div className="flex flex-col items-center gap-4 my-8">
+        <div className="flex flex-col items-center gap-4 my-2">
           <input
             className="rounded-lg p-2 w-full bg-white border border-neutral-300 text-black focus:outline-none"
             disabled={loading}
@@ -152,7 +152,7 @@ export default function Home() {
           </div>
         )}
         {showDeployedURL && (
-          <div className="mt-6 py-4 px-2 rounded-lg font-semibold text-2xl">
+          <div className="py-4 px-2 rounded-lg font-semibold text-2xl">
             <p>
               Deployed URL:{" "}
               <a
@@ -170,7 +170,7 @@ export default function Home() {
             </p>
           </div>
         )}
-        <p className="text-lg py-16">
+        <p className="text-lg py-4">
           <span className="font-bold">Tech Stack:</span> Next.js, Kubernetes,
           Docker, AWS- ECS, ECR, S3, Node.js, Redis
         </p>

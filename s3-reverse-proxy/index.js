@@ -5,14 +5,14 @@ const app = express();
 const cors = require("cors");
 app.use(cors());
 
-const BASE_PATH = ``;
+const BASE = process.env.BASE_PATH;
 
 const proxy = httpProxy.createProxyServer();
 app.use((req, res) => {
   const hostname = req.hostname;
   const subDomain = hostname.split(".")[0];
   console.log(subDomain);
-  const resolveTo = `${BASE_PATH}/${subDomain}`;
+  const resolveTo = `${BASE}/${subDomain}`;
 
   console.log(`Proxying to: ${resolveTo}`); // Log the target URL
 
