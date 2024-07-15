@@ -42,7 +42,7 @@ export default function Home() {
 
     try {
       const { data } = await axios.post<ProjectResponse>(
-        "http://localhost:9000/project",
+        "https://rooster-g5l3.onrender.com/",
         {
           gitURL: repoURL,
           slug: projectId,
