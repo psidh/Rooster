@@ -2,6 +2,12 @@
 
 Rooster is an application that allows users to deploy React applications effortlessly with a single click. It is designed for quick production testing and in-house testing, providing a seamless experience for developers who want to see their projects live without the hassle of manual deployments.
 
+
+https://github.com/user-attachments/assets/51a20abd-561c-4179-9df2-44b7c5fa18ba
+
+
+
+
 ## What It Solves
 
 Rooster solves the problem of manual and time-consuming deployments for React applications. By automating the deployment process, it allows developers to focus more on building their applications and less on the infrastructure setup. It provides a quick and easy way to deploy applications, making it ideal for rapid testing and continuous integration workflows.
